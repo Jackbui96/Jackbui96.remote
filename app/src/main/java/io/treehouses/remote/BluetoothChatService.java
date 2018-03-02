@@ -224,9 +224,11 @@ public class BluetoothChatService {
         Bundle bundle = new Bundle();
         bundle.putString(Constants.DEVICE_NAME, device.getName());
 
+        /*
         write("cd boot\n".getBytes());
         write("cat version.txt\n".getBytes());
         write("pirateship detectrpi\n".getBytes());
+        */
 
         msg.setData(bundle);
         mHandler.sendMessage(msg);
