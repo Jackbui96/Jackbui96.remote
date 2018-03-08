@@ -28,13 +28,15 @@ public class WifiDialogFragment extends DialogFragment {
     private EditText mPWDEditText;
 
     private boolean isValidInput;
+    private BluetoothChatService mChatService;
 
-    public static WifiDialogFragment newInstance(int num){
+    public static WifiDialogFragment newInstance(int num, BluetoothChatService mChatService){
 
         WifiDialogFragment dialogFragment = new WifiDialogFragment();
-//        Bundle bundle = new Bundle();
-//        bundle.putInt("num", num);
-//        dialogFragment.setArguments(bundle);
+        Bundle mBundle = new Bundle();
+        mBundle.putInt("num", num);
+        dialogFragment.setArguments(mBundle);
+        dialogFragment.setBluetoothChatService(mChatService);
 
         return dialogFragment;
 
@@ -50,6 +52,7 @@ public class WifiDialogFragment extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View mView = inflater.inflate(R.layout.dialog_design,null);
         initLayoutView(mView);
+        setRetainInstance(true);
 
         final AlertDialog mDialog = new AlertDialog.Builder(getActivity())
                 .setView(mView)
@@ -66,6 +69,10 @@ public class WifiDialogFragment extends DialogFragment {
                                     Intent intent = new Intent();
                                     intent.putExtra("SSID", SSID);
                                     intent.putExtra("PWD", PWD);
+
+                                    //Test
+                                    mChatService.write("date".getBytes());
+
                                     getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
                                 }
                             }
@@ -129,6 +136,10 @@ public class WifiDialogFragment extends DialogFragment {
         mSSIDEditText = (EditText)mView.findViewById(R.id.SSID);
         mPWDEditText = (EditText)mView.findViewById(R.id.password);
 
+    }
+
+    public void setBluetoothChatService(BluetoothChatService mChatService){
+        this.mChatService = mChatService;
     }
 
 }

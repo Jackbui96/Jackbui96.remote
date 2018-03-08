@@ -549,7 +549,7 @@ public class BluetoothChatFragment extends android.support.v4.app.Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.wifi_configuration: {
-                showNWifiDialog();
+                showNWifiDialog(mChatService);
                 return true;
             }
             case R.id.insecure_connect_scan: {
@@ -567,10 +567,11 @@ public class BluetoothChatFragment extends android.support.v4.app.Fragment {
         return false;
     }
 
-    public void showNWifiDialog() {
+    public void showNWifiDialog(BluetoothChatService mChatService) {
         // Create an instance of the dialog fragment and show it
 
-        DialogFragment dialogFrag = WifiDialogFragment.newInstance(123);
+        DialogFragment dialogFrag = WifiDialogFragment.newInstance(123, mChatService);
+        Bundle arg = new Bundle();
         dialogFrag.setTargetFragment(this, REQUEST_DIALOG_FRAGMENT);
         dialogFrag.show(getFragmentManager().beginTransaction(), "dialog");
 
