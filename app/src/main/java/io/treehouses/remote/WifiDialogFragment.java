@@ -71,7 +71,7 @@ public class WifiDialogFragment extends DialogFragment {
                                     intent.putExtra("PWD", PWD);
 
                                     //Test
-                                    mChatService.write("date".getBytes());
+                                    //mChatService.write("date".getBytes());
 
                                     getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
                                 }
