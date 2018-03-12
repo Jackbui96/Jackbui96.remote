@@ -99,9 +99,15 @@
                     android:text="@string/DockerButton"
                     android:textColor="@android:color/background_light" />
 
-            </LinearLayout>
-        </ScrollView>
+                <Button
+                    android:id="@+id/RB"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Reset Wifi Conf" />
 
+            </LinearLayout>
+
+        </ScrollView>
     </LinearLayout>
 
 </LinearLayout>

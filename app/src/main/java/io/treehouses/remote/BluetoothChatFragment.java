@@ -82,6 +82,7 @@ public class BluetoothChatFragment extends android.support.v4.app.Fragment {
     private Button Tbutton;
     private Button Dbutton;
     private Button Vbutton;
+    private Button Rbutton;
 
     /**
      * Name of the connected device
@@ -173,6 +174,7 @@ public class BluetoothChatFragment extends android.support.v4.app.Fragment {
         Tbutton = (Button) view.findViewById(R.id.TB);
         Dbutton = (Button)view.findViewById(R.id.DB);
         Vbutton = (Button)view.findViewById(R.id.VB);
+        Rbutton = (Button)view.findViewById(R.id.RB);
     }
 
     /**
@@ -238,6 +240,25 @@ public class BluetoothChatFragment extends android.support.v4.app.Fragment {
                 sendMessage(v);
             }
         });
+
+        Rbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                JSONObject mJson = new JSONObject();
+                try {
+                    mJson.put("SSID", "");
+                    mJson.put("PWD", "");
+                    Log.d("This is Json Reset", mJson.getString("SSID"));
+                    Log.d("This is Json Reset", mJson.getString("PWD"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                byte[] send = mJson.toString().getBytes();
+                mChatService.write(send);
+            }
+        });
+
         // Initialize the BluetoothChatService to perform bluetooth connections
         mChatService = new BluetoothChatService(getActivity(), mHandler);
 
@@ -304,12 +325,24 @@ public class BluetoothChatFragment extends android.support.v4.app.Fragment {
             try {
                 mJson.put("SSID",SSID);
                 mJson.put("PWD",PWD);
+                Log.d("This is Json", mJson.getString("SSID"));
+                Log.d("This is Json", mJson.getString("PWD"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
+            Log.d("This is Json", mJson.toString());
+
+
+
+
+
+
             byte[] send = mJson.toString().getBytes();
             mChatService.write(send);
+
+
+
 
             // Reset out string buffer to zero and clear the edit text field
             mOutStringBuffer.setLength(0);
