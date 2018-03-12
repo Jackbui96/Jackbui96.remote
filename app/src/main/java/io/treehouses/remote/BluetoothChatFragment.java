@@ -318,6 +318,7 @@ public class BluetoothChatFragment extends android.support.v4.app.Fragment {
             return;
         }
 
+        String WiFiConf = "";
         // Check that there's actually something to send
         if (SSID.length() > 0) {
             // Get the message bytes and tell the BluetoothChatService to write
@@ -327,18 +328,33 @@ public class BluetoothChatFragment extends android.support.v4.app.Fragment {
                 mJson.put("PWD",PWD);
                 Log.d("This is Json", mJson.getString("SSID"));
                 Log.d("This is Json", mJson.getString("PWD"));
+                WiFiConf = "pirateship wifi " + mJson.getString("SSID") + " " + mJson.getString("PWD");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
             Log.d("This is Json", mJson.toString());
 
+            JSONObject testJson = new JSONObject();
+            try{
+                mJson.put("SSID",SSID);
+                mJson.put("PWD",PWD);
+                Log.d("This is Json", mJson.getString("SSID"));
+                Log.d("This is Json", mJson.getString("PWD"));
+                WiFiConf = "pirateship wifi " + mJson.getString("SSID") + " " + mJson.getString("PWD");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
 
 
 
-
+            //byte[] send = WiFiConf.getBytes();
             byte[] send = mJson.toString().getBytes();
+
+
+
+            //mJson.toString().getBytes();
             mChatService.write(send);
 
 
