@@ -597,6 +597,10 @@ public class BluetoothChatFragment extends android.support.v4.app.Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.wifi_staticconfig: {
+                showStaticWifiConfig(mChatService);
+                return true;
+            }
             case R.id.wifi_configuration: {
                 showNWifiDialog(mChatService);
                 return true;
@@ -616,15 +620,20 @@ public class BluetoothChatFragment extends android.support.v4.app.Fragment {
         return false;
     }
 
-    public void showNWifiDialog(BluetoothChatService mChatService) {
+    public void showStaticWifiConfig(BluetoothChatService mChatService) {
         // Create an instance of the dialog fragment and show it
-
         DialogFragment dialogFrag = WifiDialogFragment.newInstance(123, mChatService);
         Bundle arg = new Bundle();
         dialogFrag.setTargetFragment(this, REQUEST_DIALOG_FRAGMENT);
         dialogFrag.show(getFragmentManager().beginTransaction(), "dialog");
+    }
 
-
+    public void showNWifiDialog(BluetoothChatService mChatService) {
+        // Create an instance of the dialog fragment and show it
+        DialogFragment dialogFrag = WifiDialogFragment.newInstance(123, mChatService);
+        Bundle arg = new Bundle();
+        dialogFrag.setTargetFragment(this, REQUEST_DIALOG_FRAGMENT);
+        dialogFrag.show(getFragmentManager().beginTransaction(), "dialog");
     }
 
     public boolean isJson(String str) {
