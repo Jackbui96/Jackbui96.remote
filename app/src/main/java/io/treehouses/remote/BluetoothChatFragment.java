@@ -366,6 +366,64 @@ public class BluetoothChatFragment extends android.support.v4.app.Fragment {
         }
     }
 
+    private void sendMessage(String ip, String mask, String gateway, String dns) {
+        // Check that we're actually connected before trying anything
+        if (mChatService.getState() != BluetoothChatService.STATE_CONNECTED) {
+            Toast.makeText(getActivity(), R.string.not_connected, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Check that there's actually something to send
+        if (ip.length() > 0) {
+            // Get the message bytes and tell the BluetoothChatService to write
+            //JSONObject mJson = new JSONObject();
+            //try {
+            //    mJson.put("SSID",SSID);
+            //    mJson.put("PWD",PWD);
+            //    Log.d("This is Json", mJson.getString("SSID"));
+            //    Log.d("This is Json", mJson.getString("PWD"));
+            //    WiFiConf = "pirateship wifi " + mJson.getString("SSID") + " " + mJson.getString("PWD");
+            //} catch (JSONException e) {
+            //   e.printStackTrace();
+            //}
+
+            //Log.d("This is Json", mJson.toString());
+
+            //JSONObject testJson = new JSONObject();
+            //try{
+            //    mJson.put("SSID",SSID);
+             //   mJson.put("PWD",PWD);
+             //   Log.d("This is Json", mJson.getString("SSID"));
+             //   Log.d("This is Json", mJson.getString("PWD"));
+             //   WiFiConf = "pirateship wifi " + mJson.getString("SSID") + " " + mJson.getString("PWD");
+            //} catch (JSONException e) {
+            //    e.printStackTrace();
+            //}
+
+
+
+
+            //byte[] send = WiFiConf.getBytes();
+            String staticWifi = "pirateship staticwifi <" + ip + "> <" + mask + "> <" + gateway + "> <" + dns +">";
+
+            Log.d("Testing", staticWifi);
+
+            byte[] send = staticWifi.getBytes();
+
+
+
+            //mJson.toString().getBytes();
+            mChatService.write(send);
+
+
+
+
+            // Reset out string buffer to zero and clear the edit text field
+            mOutStringBuffer.setLength(0);
+            mOutEditText.setText(mOutStringBuffer);
+        }
+    }
+
     /**
      * The action listener for the EditText widget, to listen for the return key
      */
@@ -547,25 +605,48 @@ public class BluetoothChatFragment extends android.support.v4.app.Fragment {
                         return;
                     }
 
-                    //show the progress bar, disable user interaction
-                    mProgressDialog.show();
-                    //TODO: start watchdog
-                    isCountdown = true;
-                    mHandler.postDelayed(watchDogTimeOut,30000);
-                    Log.d(TAG, "watchDog start");
+                    if(!(data.getStringArrayExtra("SSID") == null)){
+                        mProgressDialog.show();
+                        //TODO: start watchdog
+                        isCountdown = true;
+                        mHandler.postDelayed(watchDogTimeOut,30000);
+                        Log.d(TAG, "watchDog start");
 
-                    //get SSID & PWD from user input
-                    String SSID = data.getStringExtra("SSID") == null? "":data.getStringExtra("SSID");
-                    String PWD = data.getStringExtra("PWD") == null? "":data.getStringExtra("PWD");
+                        //get SSID & PWD from user input
+                        String SSID = data.getStringExtra("SSID") == null? "":data.getStringExtra("SSID");
+                        String PWD = data.getStringExtra("PWD") == null? "":data.getStringExtra("PWD");
 
-                    Log.d(TAG, "back from dialog: ok, SSID = " + SSID + ", PWD = " + PWD);
+                        Log.d(TAG, "back from dialog: ok, SSID = " + SSID + ", PWD = " + PWD);
+                        sendMessage(SSID,PWD);
+                    } else  {
 
-                    //TODO: 1. check Valid input  2. get the SSID and password from data object and send it to RPi through sendMessage() method
+                        String ip = data.getStringExtra("ip") == null? "":data.getStringExtra("ip");
+                        String mask = data.getStringExtra("mask") == null? "":data.getStringExtra("mask");
+                        String gateway = data.getStringExtra("gateway") == null? "":data.getStringExtra("gateway");
+                        String dns = data.getStringExtra("dns") == null? "":data.getStringExtra("dns");
+
+                        Log.d(TAG, "back from dialog: ok, " +
+                                "ip = " + ip +
+                                ", mask = " + mask +
+                                ", gateway = " + gateway +
+                                ", dns = " + dns);
+
+                        //TODO: 1. check Valid input  2. get the SSID and password from data object and send it to RPi through sendMessage() method
 //                    Toast.makeText(getActivity(), R.string.config_success,
 //                            Toast.LENGTH_SHORT).show();
 
-                    sendMessage(SSID,PWD);
-                    //TODO:1. lock the app when configuring. 2. listen to configuration result and do the logic
+
+                        sendMessage(ip, mask, gateway, dns);
+                        //TODO:1. lock the app when configuring. 2. listen to configuration result and do the logic
+
+                    }
+
+                    //show the progress bar, disable user interaction
+
+
+
+                    // Test
+
 
                 }else{
                     Log.d(TAG, "back from dialog, fail");
@@ -622,7 +703,7 @@ public class BluetoothChatFragment extends android.support.v4.app.Fragment {
 
     public void showStaticWifiConfig(BluetoothChatService mChatService) {
         // Create an instance of the dialog fragment and show it
-        DialogFragment dialogFrag = WifiDialogFragment.newInstance(123, mChatService);
+        DialogFragment dialogFrag = StaticWifiDialogFragment.newInstance(123, mChatService);
         Bundle arg = new Bundle();
         dialogFrag.setTargetFragment(this, REQUEST_DIALOG_FRAGMENT);
         dialogFrag.show(getFragmentManager().beginTransaction(), "dialog");

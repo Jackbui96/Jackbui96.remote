@@ -74,6 +74,12 @@
     <string name="config_success">Configure Wifi successfully, IP: </string>
     <string name="config_fail">Fail to configure Wifi! Please check SSID and/or password and try again.</string>
     <string name="config_alreadyConfig">You have already configured the wifi</string>
+
+    <!-- StaticWifiDialogFragment -->
     <string name="static_connect">Static WiFi Config</string>
+    <string name="ip">IPv4</string>
+    <string name="mask">Mask</string>
+    <string name="gateway">Gateway</string>
+    <string name="dns">DNS</string>
 
 </resources>
